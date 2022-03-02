@@ -33,6 +33,8 @@ namespace HotelListing.API
                 options.UseSqlServer(Configuration.GetConnectionString("sqlConnection"))
             );
 
+            //services.AddSingleto
+
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", builder =>
