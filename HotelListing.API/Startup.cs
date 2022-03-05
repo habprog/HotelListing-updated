@@ -1,4 +1,7 @@
+using HotelListing.API.Configurations;
 using HotelListing.API.Data;
+using HotelListing.API.IRepository;
+using HotelListing.API.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -33,8 +36,6 @@ namespace HotelListing.API
                 options.UseSqlServer(Configuration.GetConnectionString("sqlConnection"))
             );
 
-            //services.AddSingleto
-
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", builder =>
@@ -44,12 +45,18 @@ namespace HotelListing.API
                     
             });
 
+            services.AddAutoMapper(typeof(MapperInitializer));
+
+            services.AddTransient<IUnitOfWork, UnitOfWork>(); 
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HotelListing.API", Version = "v1" });
             });
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(op =>
+            op.SerializerSettings.ReferenceLoopHandling =
+                Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
