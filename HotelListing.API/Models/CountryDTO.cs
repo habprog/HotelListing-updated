@@ -19,4 +19,9 @@ namespace HotelListing.API.Models
 
         public virtual ICollection<HotelDTO> Hotels { get; set; }
     }
+
+    public class UpdateCountryDTO : CreateCountryDTO
+    {
+        public virtual ICollection<CreateHotelDTO> Hotels { get; set; }
+    }
 }
